@@ -1,0 +1,18 @@
+<mat-toolbar color="primary" class="drop-shadow-xl">
+    <mat-toolbar-row class="flex justify-between">
+        <a [routerLink]="['/']" routerLinkActive="router-link-active"  >Store</a>
+        <span></span>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <a [routerLink]="['/login']" *ngIf="!isLoggedIn">
+                <button mat-menu-item>Login</button>
+            </a>
+            <button (click)="logout()" *ngIf="isLoggedIn" mat-menu-item>Logout</button>
+            <a [routerLink]="['/help']">
+                <button mat-menu-item>Help</button>
+            </a>
+        </mat-menu>
+    </mat-toolbar-row>
+</mat-toolbar>

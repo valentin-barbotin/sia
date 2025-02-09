@@ -1,0 +1,71 @@
+syntax = "proto3";
+package tag.v1;
+
+import "proto/storefile.proto";
+
+message Tag {
+    string name = 1;
+}
+
+service TagService {
+    rpc CreateTag(CreateTagRequest) returns (CreateTagResponse);
+    rpc RemoveTag(RemoveTagRequest) returns (RemoveTagResponse);
+    rpc LinkFileWithTag(LinkFileWithTagRequest) returns (LinkFileWithTagResponse);
+    rpc GetTags(GetTagsRequest) returns (GetTagsResponse);
+    rpc GetFileTags(GetFileTagsRequest) returns (GetFileTagsResponse);
+    rpc RemoveFileTag(RemoveFileTagRequest) returns (RemoveFileTagResponse);
+    rpc GetFilesTaggedWith(GetFilesTaggedWithRequest) returns (GetFilesTaggedWithResponse);
+}
+
+message CreateTagRequest {
+    string name = 1;
+}
+
+message CreateTagResponse {
+}
+
+message RemoveTagRequest {
+    string name = 1;
+}
+
+message RemoveTagResponse {
+}
+
+message LinkFileWithTagRequest {
+    string file_id = 1;
+    string tag_name = 2;
+}
+
+message LinkFileWithTagResponse {
+}
+
+message GetTagsRequest {
+}
+
+message GetTagsResponse {
+    repeated Tag tags = 1;
+}
+
+message GetFileTagsRequest {
+    string file_id = 1;
+}
+
+message GetFileTagsResponse {
+    repeated Tag tags = 1;
+}
+
+message RemoveFileTagRequest {
+    string file_id = 1;
+    string tag_name = 2;
+}
+
+message RemoveFileTagResponse {
+}
+
+message GetFilesTaggedWithRequest {
+    string tag_name = 1;
+}
+
+message GetFilesTaggedWithResponse {
+    repeated storefile.v1.File files = 1;
+}

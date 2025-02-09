@@ -1,0 +1,45 @@
+syntax = "proto3";
+package file.v1;
+
+option java_multiple_files = true;
+option java_package = "ecojira.pb";
+option java_outer_classname = "FileProto";
+option objc_class_prefix = "HLW";
+
+service FileService {
+  rpc GetFile(DownloadRequest) returns (stream DownloadResponse) {};
+  rpc UploadFile(stream UploadRequest) returns (UploadResponse) {};
+  rpc UpdateFile(stream UpdateRequest) returns (UpdateResponse) {};
+  rpc DeleteFile(DeleteRequest) returns (DeleteResponse) {};
+}
+
+message DownloadRequest {
+  string path = 1;
+}
+
+message DownloadResponse {
+  bytes message = 1;
+}
+
+
+message UploadRequest {
+  bytes message = 1;
+}
+
+message UploadResponse {
+  string uuid = 1;
+}
+
+message UpdateRequest {
+  string message = 1;
+}
+
+message UpdateResponse {
+}
+
+message DeleteRequest {
+  string uuid = 1;
+}
+
+message DeleteResponse {
+}

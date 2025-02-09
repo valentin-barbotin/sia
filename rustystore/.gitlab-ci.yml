@@ -1,0 +1,56 @@
+stages:
+  - build
+  - test
+  - deploy
+
+docker-build:
+  # cache:
+  #   key: $CI_COMMIT_REF_SLUG
+  #   paths:
+  #     - "Cargo.lock"
+  #     - "Cargo.toml"
+  #   policy: pull-push
+  #   unprotect: false
+  #   untracked: false
+  #   when: on_success
+  image: kazuh/dockerx23
+  stage: build
+  services:
+    - docker:23-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker buildx create --use
+  script:
+    - |
+      echo "Build image $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+      docker buildx build --cache-to type=registry,ref="$CI_REGISTRY_IMAGE:cache_$CI_COMMIT_REF_SLUG",mode=max --cache-from type=registry,ref="$CI_REGISTRY_IMAGE:cache_$CI_COMMIT_REF_SLUG" --push --pull --target builder --build-arg PROFILE=dev -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+      echo "Push image -> $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+      # docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  # Run this job in a branch where a Dockerfile exists
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      exists:
+        - Dockerfile
+
+.test_code:
+  script:
+    - |
+      docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+      docker run --add-host=postgres:$(getent hosts postgres  | awk '{ print $1 }') --env-file=.env.ci --rm "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" bash -c "diesel migration run && diesel migration revert && diesel migration run && cargo test"
+
+test:code:
+  stage: test
+  image: kazuh/dockerx23
+  services:
+    - docker:23-dind
+    - name: postgres:15-alpine
+      alias: postgres
+      variables:
+        POSTGRES_DB: postgres
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_HOST_AUTH_METHOD: trust
+
+  needs:
+    - docker-build
+  script: !reference [.test_code, script]

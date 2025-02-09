@@ -1,0 +1,45 @@
+<div class="p-4">
+    <h1>Upload</h1>
+    <div class="w-10/12">
+        <div class="mt-4">
+            <input (change)="onFileSelected($event)" #data hidden type="file">
+            <div>
+                <mat-form-field>
+                    <mat-label>Tags</mat-label>
+                    <mat-select multiple [formControl]="tagsSelected">
+                        <mat-option *ngFor="let tag of tags" [value]="tag">
+                            {{ tag }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <button mat-raised-button
+                color="primary"
+                type="button"
+                class="mt-2"
+                (click)="data.click()">
+                Selectionner..
+            </button>
+            <p class="align-bottom" *ngIf="file">{{file.name}}</p>
+            <p class="align-bottom" *ngIf="!file">Aucune selection</p>
+        </div>
+    
+        <div class="flex mt-4">
+            <button mat-raised-button
+                class="mr-2"
+                color="primary"
+                type="button"
+                (click)="upload()">
+                Valider
+            </button>
+            <button mat-raised-button
+                class="mr-2"
+                color="primary"
+                type="button"
+                (click)="cancelSelection()">
+                Annuler
+            </button>
+        </div>
+    </div>
+    <mat-progress-bar *ngIf="uploadInProgress" class="mt-3" mode="determinate" [value]="uploadProgression"></mat-progress-bar>
+</div>

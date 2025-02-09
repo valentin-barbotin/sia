@@ -1,0 +1,65 @@
+[package]
+name = "rustystorage"
+version = "0.1.0"
+edition = "2021"
+path = "src/bin/main.rs"
+
+[profile.dev]
+opt-level = 0
+debug = true
+split-debuginfo = 'packed'
+debug-assertions = true
+overflow-checks = true
+lto = false
+panic = 'unwind'
+incremental = true
+codegen-units = 256
+rpath = false
+
+[profile.release]
+opt-level = 3
+debug = false
+split-debuginfo = 'off'
+debug-assertions = false
+overflow-checks = false
+lto = false
+panic = 'unwind'
+incremental = false
+codegen-units = 16
+rpath = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+env_logger = "0.11.6"
+log = "0.4.17"
+lazy_static = "1.4.0"
+dotenv = "0.15.0"
+chrono = "0.4.23"
+fmt = "0.1.0"
+mime = "0.3.16"
+function_name = "0.3.0"
+uuid = { version = "1.2.2", features = ["serde", "v4"] }
+regex = "1.7.0"
+num = "0.4.0"
+rand = "0.9.0"
+rstest = "0.24.0"
+tonic = "0.12.3"
+tonic-reflection = "0.12.3"
+prost = "0.13.4"
+tokio = {version = "1.43.0", features = ["full"]}
+rust-s3 = "0.35.1"
+tokio-stream = "0.1.12"
+actix-web = { version = "4.9.0", features = ["openssl"] }
+actix-cors = "0.7.0"
+utoipa = {version = "5.3.1", features = ["actix_extras"]}
+utoipa-swagger-ui = {version = "9.0.0", features = ["actix-web"]}
+actix-multipart = "0.7.2"
+serde = "1.0.163"
+actix-files = "0.6.6"
+reqwest = "0.12.12"
+aes-gcm = "0.10.3"
+hex = "0.4.3"
+
+[build-dependencies]
+tonic-build = "0.12.3"
