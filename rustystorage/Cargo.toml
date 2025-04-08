@@ -47,7 +47,7 @@ rstest = "0.24.0"
 tonic = "0.12.3"
 tonic-reflection = "0.12.3"
 prost = "0.13.4"
-tokio = {version = "1.43.0", features = ["full"]}
+tokio = {version = "1.43.1", features = ["full"]}
 rust-s3 = "0.35.1"
 tokio-stream = "0.1.12"
 actix-web = { version = "4.9.0", features = ["openssl"] }
