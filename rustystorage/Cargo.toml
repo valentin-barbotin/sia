@@ -56,7 +56,7 @@ utoipa = {version = "5.3.1", features = ["actix_extras"]}
 utoipa-swagger-ui = {version = "9.0.0", features = ["actix-web"]}
 actix-multipart = "0.7.2"
 serde = "1.0.163"
-actix-files = "0.6.6"
+actix-files = "0.6.10"
 reqwest = "0.12.12"
 aes-gcm = "0.10.3"
 hex = "0.4.3"
